@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  app:
+    image: mynetwork-app:latest
+    container_name: myn_app
+    environment:
+      - NODE_ENV=production
+      - USER_EMAIL=wayne@mynetwork.com
+      - APP_SECRET_KEY=your_secret_key_here
+      - DB_HOST=your_database_host
+      - DB_USER=your_db_user
+      - DB_PASSWORD=your_db_password
+      - CLOUD_CONFIG_URL=https://github.com/yourusername/mynetwork-app-cloud-config
+      - SERVER=mynetwork-app-server
+      - SSH_KEY=your-public-ssh-key-here
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+    restart: always
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+networks:
+  app-network:
+    driver: bridge
